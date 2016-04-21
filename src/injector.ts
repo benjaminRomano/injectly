@@ -1,7 +1,9 @@
 
 'use strict';
 
-class Injector {
+import {Provider} from './provider';
+
+export class Injector {
 
     private resolver: { [name: string]: IProvider };
 
@@ -9,7 +11,7 @@ class Injector {
         this.resolver = {};
     }
 
-    resolve<T>(name: string): T {
+    public resolve<T>(name: string): T {
         let provider = this.resolver[name];
         
         if (!provider) {
@@ -42,7 +44,7 @@ class Injector {
         return instance;
     }
 
-    inject(dependencyNames: string[], callback) {
+    public inject(dependencyNames: string[], callback) {
         
         let dependencies = dependencyNames.map(d => {
             return this.resolve(d);
@@ -50,11 +52,26 @@ class Injector {
         
         callback(...dependencies);
     }
-
-    bind(provider) {
+    
+    public bindProvider(provider: IProvider) {
         this.resolver[provider.name] = provider;
     }
+    
+    public bind(name: string, dependencies: string[], config?: IInjectableConfig) {
+        config = config || {};
+    
+        let provider = new Provider(name, {
+            dependencies: dependencies
+        });
+
+        return (target: Function) => {
+            if (config.useExisting) {
+                provider.useExisting = target;
+            } else {
+                provider.useClass = target;
+            }
+            
+            this.bindProvider(provider);
+        };
+    }
 }
-
-export let injector: IInjector = new Injector();
-

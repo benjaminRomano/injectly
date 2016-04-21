@@ -1,0 +1,28 @@
+{
+  "name": "injectly",
+  "version": "1.0.0",
+  "description": "Lightweight dependency injector",
+  "main": "dist/injectly.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benjaminRomano/injectly.git"
+  },
+  "keywords": [
+    "Dependency",
+    "injection",
+    "ioc"
+  ],
+  "author": "Benjamin Romano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benjaminRomano/injectly/issues"
+  },
+  "homepage": "https://github.com/benjaminRomano/injectly#readme",
+  "typings": "./injectly.d.ts",
+  "devDependencies": {
+    "typescript": "^1.8.10"
+  }
+}

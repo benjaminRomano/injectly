@@ -9,7 +9,8 @@ Injectly supports classes, factory functions and arbitrary values.
 
 ### Injector API
 ``` ts 
-bind(name: string, provider: Provider);
+bindProvider(provider: Provider);
+bind(name: string, dependencies: string[], config?: IInjectableConfig);
 resolve<T>(name: string): T;
 inject(dependencyNames: string[], callback: any;
 ```
@@ -18,11 +19,13 @@ inject(dependencyNames: string[], callback: any;
 ``` ts
 import {Injector} from 'injectly';
 
-Injector.bind(new Provider('Value', {
+let injector = new Injector();
+
+injector.bindProvider(new Provider('Value', {
     useValue: "Hello World"
 }));
 
-Injector.bind(new Provider('function', {
+injector.bindProvider(new Provider('function', {
     useValue: () => { return 5; }
 }));
 ```
@@ -32,7 +35,7 @@ Injector.bind(new Provider('function', {
 
 import {Provider} from 'injectly';
 
-Injector.bind(new Provider('LogFactory', {
+injector.bindProvider(new Provider('LogFactory', {
     dependencies: ['Value'],
     useFactory: (value) => {
         console.log(`LogFactory: ${value}`); // Hello World
@@ -49,7 +52,7 @@ import {Injectable} from 'injectly';
 
 // Using decorators
 
-@Injectable('A', [])
+@injector.bind('A', [])
 class A {
     constructor() {
         console.log('A was instantiated');
@@ -57,7 +60,7 @@ class A {
 }
 
 // Create singletons by specifiying useExisting
-@Injectable('B', ['A'], { useExisting: true })
+@injector.bind('B', ['A'], { useExisting: true })
 class B {
     constructor(a: A) {
         console.log('Test was instantiated with', A);
@@ -72,7 +75,7 @@ class A {
     }
 }
 
-Injector.bind(new Provider('A', {
+injector.bindProvider(new Provider('A', {
     useClass: A
 }));
 
@@ -82,7 +85,7 @@ class B {
     }
 }
 
-Injector.bind(new Provider('B', {
+injector.bindProvider(new Provider('B', {
     dependencies: ['A'],
     useExisting: B
 }));
@@ -92,10 +95,10 @@ Injector.bind(new Provider('B', {
 ```ts
 
 // Get dependency from container
-let B = Injector.resolve<B>('B');
+let B = injector.resolve<B>('B');
 
 // Inject dependencies into a callback
-Injector.inject(['A', 'B'], (a, b) => {
+injector.inject(['A', 'B'], (a, b) => {
     console.log(a); // A { }
     console.log(b); // B { }
 });

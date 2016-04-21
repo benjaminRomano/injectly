@@ -1,0 +1,5 @@
+examples
+.vscode
+src
+dist/injectly.js.map
+dist/injectly.d.ts

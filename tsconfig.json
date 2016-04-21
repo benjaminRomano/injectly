@@ -4,9 +4,11 @@
 	"compilerOptions": {
 		"target": "es5",
 		"sourceMap": true,
+		"outDir": "dist",
 		"experimentalDecorators": true,
-		"outDir": "bin",
-		"declaration": true
+		"declaration": true,
+		"forceConsistentCasingInFileNames": true,
+		"pretty": true
 	},
 	"exclude": [
 		"node_modules",
@@ -14,6 +16,7 @@
 		"jspm_packages",
 		"tmp",
 		"temp",
-		"bin"
+		"bin",
+		"examples"
 	]
 }
