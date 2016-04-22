@@ -1,7 +1,7 @@
 
 'use strict';
 
-import {Injector, Provider} from './injectly/injectly';
+import {Injector, Provider} from '../dist/injectly';
 
 let injector = new Injector();
 

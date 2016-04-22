@@ -21,7 +21,7 @@
     "url": "https://github.com/benjaminRomano/injectly/issues"
   },
   "homepage": "https://github.com/benjaminRomano/injectly#readme",
-  "typings": "./injectly.d.ts",
+  "typings": "./dist/injectly.d.ts",
   "devDependencies": {
     "typescript": "^1.8.10"
   }

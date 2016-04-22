@@ -4,19 +4,9 @@
 	"compilerOptions": {
 		"target": "es5",
 		"sourceMap": true,
-		"outDir": "dist",
+		"outDir": ".",
 		"experimentalDecorators": true,
-		"declaration": true,
 		"forceConsistentCasingInFileNames": true,
 		"pretty": true
-	},
-	"exclude": [
-		"node_modules",
-		"bower_components",
-		"jspm_packages",
-		"tmp",
-		"temp",
-		"dist",
-		"examples"
-	]
+	}
 }

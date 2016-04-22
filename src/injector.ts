@@ -1,11 +1,26 @@
 
 'use strict';
 
-import {Provider} from './provider';
+import {Provider, IProvider} from './provider';
 
-export class Injector {
+export interface IInjectableConfig {
+    useExisting?: boolean;
+}
 
-    private resolver: { [name: string]: IProvider };
+export interface IInjector {
+    bind(name: string, dependencies: string[], config?: IInjectableConfig);
+    bindProvider(provider: IProvider);
+    inject(dependencyNames: string[], callback: any);
+    resolve<T>(name: string): T;
+}
+
+export interface IResolver {
+    [name: string]: IProvider;
+}
+
+export class Injector implements IInjector {
+
+    private resolver: IResolver;
 
     constructor() {
         this.resolver = {};
@@ -13,12 +28,12 @@ export class Injector {
 
     public resolve<T>(name: string): T {
         let provider = this.resolver[name];
-        
+
         if (!provider) {
             throw new Error(`Could not find provider for ${name}`);
         }
-        
-        if (provider.useValue) {
+
+         if (provider.useValue) {
             return provider.useValue;
         } else if (provider.useExisting && provider.instance) {
             return provider.instance;
@@ -45,21 +60,21 @@ export class Injector {
     }
 
     public inject(dependencyNames: string[], callback) {
-        
+
         let dependencies = dependencyNames.map(d => {
             return this.resolve(d);
         });
-        
+
         callback(...dependencies);
     }
-    
+
     public bindProvider(provider: IProvider) {
         this.resolver[provider.name] = provider;
     }
-    
+
     public bind(name: string, dependencies: string[], config?: IInjectableConfig) {
         config = config || {};
-    
+
         let provider = new Provider(name, {
             dependencies: dependencies
         });
@@ -70,7 +85,7 @@ export class Injector {
             } else {
                 provider.useClass = target;
             }
-            
+
             this.bindProvider(provider);
         };
     }
